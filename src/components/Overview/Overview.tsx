@@ -1,13 +1,15 @@
-import React, { SetStateAction, Dispatch, useState, useEffect } from "react";
-import axios from "axios";
-import { Product } from "../App";
-import { CartProps } from "../Header/Header";
-import sampleProductData from "../sampleData/sampleProductData";
-import sampleProductStylesData from "../sampleData/sampleProductStylesData";
-import sampleProductReviewsData from "../sampleData/sampleProductReviewsData";
-import { StyleData } from "../sampleData/sampleProductStylesData";
-import { ReviewsData } from "../sampleData/sampleProductReviewsData";
-import config from "../../config/config";
+import React, { SetStateAction, Dispatch, useState, useEffect } from 'react';
+import axios from 'axios';
+import { Product } from '../App';
+import { CartProps } from '../Header/Header';
+import sampleProductData from '../sampleData/sampleProductData';
+import sampleProductStylesData from '../sampleData/sampleProductStylesData';
+import sampleProductReviewsData from '../sampleData/sampleProductReviewsData';
+import { StyleData } from '../sampleData/sampleProductStylesData';
+import { ReviewsData } from '../sampleData/sampleProductReviewsData';
+import config from '../../config/config';
+import ImageGallery from './ImageGallery/ImageGallery';
+import DescriptionDetails from './DescriptionDetails/DescriptionDetails';
 
 interface Props {
   setLocalCart: Dispatch<SetStateAction<CartProps[]>>;
@@ -15,12 +17,18 @@ interface Props {
   productID: number;
 }
 
+export interface CondensedStyle {
+  styleId: number;
+  iconUrl: string;
+  name: string;
+}
+
 interface SkuInfo {
   quantity: string;
   size: string;
 }
 
-interface SkuObj {
+export interface SkuObj {
   [key: string]: SkuInfo;
 }
 
@@ -35,9 +43,9 @@ export default function Overview(props: Props) {
   const [currImgIdx, setCurrImgIdx] = useState<number>(0);
   const [currStyle, setCurrStyle] = useState<number>(0);
   const [skuData, setSkuData] = useState<SkuObj>({
-    "Select Size": {
-      quantity: "-",
-      size: "Select Size...",
+    'Select Size': {
+      quantity: '-',
+      size: 'Select Size...',
     },
   });
   const [productData, setProductData] = useState<Product>(sampleProductData);
@@ -55,7 +63,7 @@ export default function Overview(props: Props) {
 
   const { setLocalCart, setShowDrawer, productID } = props;
 
-  const url = "https://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp/";
+  const url = 'https://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp/';
   useEffect(() => {
     setCurrImgIdx(0);
     setCurrStyle(0);
@@ -104,9 +112,9 @@ export default function Overview(props: Props) {
   useEffect(() => {
     setSkuData({
       ...productStylesData.results[currStyle].skus,
-      "Select Size": {
-        quantity: "-",
-        size: "Select Size...",
+      'Select Size': {
+        quantity: '-',
+        size: 'Select Size...',
       },
     });
   }, [currStyle, productStylesData]);
@@ -122,11 +130,13 @@ export default function Overview(props: Props) {
   );
   avgRating /= reviewCount;
 
-  const styles = productStylesData.results.map((style) => ({
-    styleId: style.style_id,
-    iconUrl: style.photos[0].thumbnail_url,
-    name: style.name,
-  }));
+  const styles = productStylesData.results.map(
+    (style): CondensedStyle => ({
+      styleId: style.style_id,
+      iconUrl: style.photos[0].thumbnail_url,
+      name: style.name,
+    })
+  );
 
   const incrementIdx = () => {
     setCurrImgIdx((prev) => prev + 1);
@@ -139,9 +149,9 @@ export default function Overview(props: Props) {
   const changeImgView = () => {
     setIsDefaultImgView((prev) => {
       if (prev) {
-        document.body.style.overflow = "hidden";
+        document.body.style.overflow = 'hidden';
       } else {
-        document.body.style.overflow = "initial";
+        document.body.style.overflow = 'initial';
       }
       return !prev;
     });
@@ -154,5 +164,43 @@ export default function Overview(props: Props) {
       ? 0
       : Number(productStylesData.results[currStyle].sale_price);
 
-  return <p>This is the overview</p>;
+  return (
+    <>
+      {isDefaultImgView ? (
+        isLoaded.product === true &&
+        isLoaded.styles === true &&
+        isLoaded.reviews === true && (
+          <section id="overview--container">
+            <ImageGallery
+              changeImgView={changeImgView}
+              currImgIdx={currImgIdx}
+              incrementIdx={incrementIdx}
+              decrementIdx={decrementIdx}
+              setCurrImgIdx={setCurrImgIdx}
+              photos={productStylesData.results[currStyle].photos}
+            />
+            <DescriptionDetails
+              category={productData.category}
+              name={productData.name}
+              description={productData.description}
+              slogan={productData.slogan}
+              styles={styles}
+              currStyle={currStyle}
+              setCurrStyle={setCurrStyle}
+              currPrice={currPrice}
+              currSalePrice={currSalePrice}
+              reviewCount={reviewCount}
+              avgRating={avgRating}
+              skuData={skuData}
+              setLocalCart={setLocalCart}
+              setShowDrawer={setShowDrawer}
+              productID={productID}
+            />
+          </section>
+        )
+      ) : (
+        <p>ExpandedView</p>
+      )}
+    </>
+  );
 }
