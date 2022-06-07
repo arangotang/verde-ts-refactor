@@ -7,6 +7,8 @@ import React, {
   FormEvent,
 } from 'react';
 import CartMessage, { MsgTypes } from './CartMessage';
+import SizeSelector from './SizeSelector';
+import QtySelector from './QtySelector';
 import config from '../../../../config/config';
 import { CartProps } from '../../../Header/Header';
 import { SkuObj } from '../../Overview';
@@ -114,8 +116,16 @@ export default function AddToCart(props: Props) {
     <form onSubmit={handleCartSubmit} className="add-to-cart--container">
       <span>
         {message !== MsgTypes.None && <CartMessage message={message} />}
-        <p>Size Selector</p>
-        <p>Qty Selector</p>
+        <SizeSelector
+          skuData={skuData}
+          currSku={currSku}
+          setCurrSku={setCurrSku}
+        />
+        <QtySelector
+          availQty={availQty}
+          selectedQty={selectedQty}
+          setSelectedQty={setSelectedQty}
+        />
       </span>
       <button type="submit" className="add-to-cart--btn">
         ADD TO CART
