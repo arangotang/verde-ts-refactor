@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Header, { CartProps } from "./Header/Header";
+import Overview from "./Overview/Overview";
 import currentProduct from "./sampleData/sampleProductData";
 
 interface Feature {
@@ -67,7 +68,11 @@ function App() {
         deleteCartItem={deleteCartItem}
         setCurProd={setCurProd}
       />
-      <p>yo</p>
+      <Overview
+        setLocalCart={setLocalCart}
+        setShowDrawer={setShowDrawer}
+        productID={productID}
+      />
     </>
   );
 }

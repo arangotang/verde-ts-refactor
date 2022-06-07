@@ -5,7 +5,7 @@ interface Props {
 }
 export default function CartDrawerBtns(props: Props) {
   const { cartTotal } = props;
-  console.log(cartTotal);
+
   return (
     <button
       className="cart-drawer--btns checkout--btn"
