@@ -10,6 +10,7 @@ import { ReviewsData } from '../sampleData/sampleProductReviewsData';
 import config from '../../config/config';
 import ImageGallery from './ImageGallery/ImageGallery';
 import DescriptionDetails from './DescriptionDetails/DescriptionDetails';
+import ExpandedView from './ExpandedView/ExpandedView';
 
 interface Props {
   setLocalCart: Dispatch<SetStateAction<CartProps[]>>;
@@ -199,7 +200,15 @@ export default function Overview(props: Props) {
           </section>
         )
       ) : (
-        <p>ExpandedView</p>
+        <ExpandedView
+          changeImgView={changeImgView}
+          currPhotoUrl={
+            productStylesData.results[currStyle].photos[currImgIdx].url
+          }
+          photos={productStylesData.results[currStyle].photos}
+          currImgIdx={currImgIdx}
+          setCurrImgIdx={setCurrImgIdx}
+        />
       )}
     </>
   );
