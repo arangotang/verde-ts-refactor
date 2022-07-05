@@ -1,5 +1,17 @@
 # 🌿 Verde - TypeScript Refactor
 
-[Original project](https://github.com/RFP-Verde/RFP-2204-FEC) - Verde is a fictional ecommerce site that was developed as part of my bootcamp's Front End Capstone group project.
+[Original project](https://github.com/RFP-Verde/RFP-2204-FEC) - Verde is a fictional ecommerce site that was developed as part of my bootcamp's Front End Capstone group project. I decided to refactor the Overview section of the site to TypeScript.
 
-In the original project, I was responsible for designing the Overview component of the page. Shortly after finishing the project with my group, I decided that this would be a great opportunity for me to learn a new skill.
+![](public/assets/verde-refactor-demo.gif)
+
+## Setup
+
+1. Intall dependencies:
+
+`npm install`
+
+2. Create a copy of in the `src/config` folder, create `config.js` (model it from the example provided in the folder).
+
+3. Once configured, start the client:
+
+`npm start`
